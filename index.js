@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 require("dotenv").config();
 const cors = require("cors");
@@ -28,11 +28,20 @@ async function run() {
 
       res.send(result);
     });
-    app.post("/completetodo", async (req, res) => {
+    app.put("/completetodo/:id", async (req, res) => {
+      const id = req.params.id;
+
       const value = req.body;
-
-      const result = await comPletetoDolistCollection.insertOne(value);
-
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: value,
+      };
+      const result = await comPletetoDolistCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
       res.send(result);
     });
     app.get("/completedTasks", async (req, res) => {
@@ -47,7 +56,7 @@ async function run() {
     app.put("/updatetodo/:id", async (req, res) => {
       const id = req.params.id;
       const info = req.body;
-      const filter = { _id: "id" };
+      const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = {
         $set: info,
