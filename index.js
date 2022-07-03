@@ -81,6 +81,13 @@ async function run() {
       const result = await toDolistCollection.deleteOne(query);
       res.send(result);
     });
+
+    app.delete("/removeCompletetodo/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await comPletetoDolistCollection.deleteOne(query);
+      res.send(result);
+    });
     app.get("/singleTodo/:id", async (req, res) => {
       const id = req.params;
       const query = { _id: ObjectId(id) };
