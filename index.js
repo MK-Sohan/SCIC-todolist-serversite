@@ -84,7 +84,9 @@ async function run() {
 
     app.delete("/removeCompletetodo/:id", async (req, res) => {
       const id = req.params.id;
+      console.log(id);
       const query = { _id: ObjectId(id) };
+      console.log(query);
       const result = await comPletetoDolistCollection.deleteOne(query);
       res.send(result);
     });
