@@ -48,7 +48,8 @@ async function run() {
         updateDoc,
         options
       );
-      res.send(result);
+      const deletetodo = await toDolistCollection.deleteOne(filter);
+      res.send({ result, deletetodo });
     });
     app.get("/completedTasks", async (req, res) => {
       const result = await comPletetoDolistCollection.find({}).toArray();
